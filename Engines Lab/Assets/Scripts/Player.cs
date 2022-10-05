@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Jump()
+    public void Jump()
     {
         if (grounded)
         {
