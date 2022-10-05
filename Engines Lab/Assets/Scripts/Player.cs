@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     PlayerAction inputAction;
     Vector2 movement;
     float moveSpeed = 10f;
+    public int moveMul = 1;
 
     public Camera cam;
 
@@ -18,6 +19,8 @@ public class Player : MonoBehaviour
 
     public GameObject bullet;
     public Transform bulletPos;
+
+    public bool doubleShot = false;
 
     private void OnEnable()
     {
@@ -47,8 +50,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.forward * movement.y * Time.deltaTime * moveSpeed, Space.Self);
-        transform.Translate(Vector3.right * movement.x * Time.deltaTime * moveSpeed, Space.Self);
+        float currentMovSpeed = moveSpeed * moveMul;
+        transform.Translate(Vector3.forward * movement.y * Time.deltaTime * currentMovSpeed, Space.Self);
+        transform.Translate(Vector3.right * movement.x * Time.deltaTime * currentMovSpeed, Space.Self);
 
         Vector3 offset = new Vector3(0, 1, 0);
 
@@ -79,5 +83,11 @@ public class Player : MonoBehaviour
         
         Rigidbody brb = Instantiate(bullet, bulletPos.position, Quaternion.identity).GetComponent<Rigidbody>();
         brb.AddForce(Vector3.forward * 1000f);
+
+        if (doubleShot)
+        {
+            Rigidbody brb2 = Instantiate(bullet, bulletPos.position + Vector3.up * 2, Quaternion.identity).GetComponent<Rigidbody>();
+            brb2.AddForce(Vector3.forward * 1000f);
+        }
     }
 }
